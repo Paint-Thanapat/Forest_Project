@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class PlayerHealth : Health, IPlayerElement
 {
-    private PlayerMovementController _playerMovementController;
+    private Player _player;
     private PlayerInteractController _playerInteractController;
 
     void Start()
     {
-        _playerMovementController = GetComponent<PlayerMovementController>();
+        _player = GetComponent<Player>();
         _playerInteractController = GetComponent<PlayerInteractController>();
 
         Invoke(nameof(SetPlayerToGameManager), 0.1f);
@@ -23,9 +23,6 @@ public class PlayerHealth : Health, IPlayerElement
 
     public override void TakeDamage(float damage)
     {
-        if (_playerMovementController.dashing)
-            return;
-
         base.TakeDamage(damage);
 
         GameManager.Instance.mainCamera.StartCameraShake();
@@ -35,7 +32,7 @@ public class PlayerHealth : Health, IPlayerElement
     public override void Die()
     {
         base.Die();
-        _playerMovementController.TransitionToStopState();
+        _player.ChangeState(_player.movementStateMachine.stopState);
         _playerInteractController.TransitionToStopState();
 
         GameManager.Instance.ExplosionForce(transform.position, 5, 1.5f);
