@@ -36,6 +36,10 @@ MonoBehaviour:
   RpcList:
   - ClickRpc
   - DestroyRpc
+  - RPC_SyncInteracts
+  - RPC_SyncWindowBreak
+  - RPC_SyncWindowFullClose
+  - RPC_SyncWindowRepair
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 0
