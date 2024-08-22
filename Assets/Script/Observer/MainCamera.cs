@@ -6,6 +6,7 @@ public enum CameraView { LockPlayerPosition, FollowMouse }
 
 public class MainCamera : Observer
 {
+    public static MainCamera Instance;
     public CameraView cameraView;
     private PlayerInteractController _playerInteractController;
 
@@ -21,6 +22,12 @@ public class MainCamera : Observer
     public bool isShaking;
     public float shakeDuration = 0.2f;
     public float shakeMagnitude;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     void Start()
     {
         _offset = transform.position;
