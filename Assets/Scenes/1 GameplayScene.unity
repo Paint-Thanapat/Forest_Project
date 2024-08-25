@@ -309,7 +309,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
+  m_Intensity: 1.2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -730,9 +730,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0661cab6fe33e5f4da1269bb0b61c79d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 11, y: 11}
-  startGridPos: {x: -5, y: -5}
-  gridDistance: 1
+  gridSize: {x: 20, y: 20}
+  centerGridPos: {x: 0, y: 0}
+  gridSizeAndDistance: 1.5
   intervalTime: 1
   grid: {fileID: 822725133440235370, guid: 4e7b81d42ff137046810d335e4434fe1, type: 3}
 --- !u!4 &746870716

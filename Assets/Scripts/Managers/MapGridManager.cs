@@ -5,8 +5,8 @@ using UnityEngine;
 public class MapGridManager : SceneSingleton<MapGridManager>
 {
     [SerializeField] private Vector2Int gridSize = new Vector2Int(5, 5);
-    [SerializeField] private Vector2 startGridPos;
-    [SerializeField] private float gridDistance = 1;
+    [SerializeField] private Vector2 centerGridPos;
+    [SerializeField] private float gridSizeAndDistance = 1;
 
 
     [SerializeField] private float intervalTime = 1f;
@@ -56,12 +56,15 @@ public class MapGridManager : SceneSingleton<MapGridManager>
     {
         mapGrids = new MapGrid[gridSize.x, gridSize.y];
 
+        Vector2 startGridPos = new Vector2(-((float)gridSize.x - 1) / 2 * gridSizeAndDistance, -((float)gridSize.y - 1) / 2 * gridSizeAndDistance);
+
         for (int i = 0; i < gridSize.x; i++)
         {
             for (int j = 0; j < gridSize.y; j++)
             {
-                mapGrids[i, j] = Instantiate(grid, new Vector3(startGridPos.x + (i * gridDistance), 0, startGridPos.y + (j * gridDistance)), Quaternion.identity);
+                mapGrids[i, j] = Instantiate(grid, new Vector3(startGridPos.x + (i * gridSizeAndDistance) + centerGridPos.x, 0, startGridPos.y + (j * gridSizeAndDistance) + centerGridPos.y), Quaternion.identity);
                 mapGrids[i, j].transform.parent = this.transform;
+                mapGrids[i, j].transform.localScale = Vector3.one * gridSizeAndDistance;
                 mapGrids[i, j].gridID = (gridSize.x * i) + j;
             }
         }

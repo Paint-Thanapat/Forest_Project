@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 
 public class NetworkMapManager : NetworkSceneSingleton<NetworkMapManager>
 {
