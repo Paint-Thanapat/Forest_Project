@@ -730,9 +730,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0661cab6fe33e5f4da1269bb0b61c79d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 20, y: 20}
+  gridSize: {x: 5, y: 4}
   centerGridPos: {x: 0, y: 0}
-  gridSizeAndDistance: 1.5
+  gridSizeAndDistance: 10
   intervalTime: 1
   grid: {fileID: 822725133440235370, guid: 4e7b81d42ff137046810d335e4434fe1, type: 3}
 --- !u!4 &746870716

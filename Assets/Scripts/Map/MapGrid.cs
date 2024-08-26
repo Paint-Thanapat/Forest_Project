@@ -29,14 +29,18 @@ public class MapGrid : MonoBehaviourPunCallbacks
             mapObs.obstacle.SetActive(false);
         }
 
-        if (PhotonNetwork.IsMasterClient)
-        {
-            int randomMainObstacle = Random.Range(0, obstacles.Length);
+        // * Fix Use Only Block
+        SetMainObstacle(0);
 
-            SetMainObstacle(randomMainObstacle);
+        // * Random and Send to other Client
+        // if (PhotonNetwork.IsMasterClient)
+        // {
+        //     int randomMainObstacle = Random.Range(0, obstacles.Length);
 
-            NetworkMapManager.SendSelectMainObstacle(gridID, randomMainObstacle);
-        }
+        //     SetMainObstacle(randomMainObstacle);
+
+        //     NetworkMapManager.SendSelectMainObstacle(gridID, randomMainObstacle);
+        // }
     }
 
     public void SetMainObstacle(int obsIndex)

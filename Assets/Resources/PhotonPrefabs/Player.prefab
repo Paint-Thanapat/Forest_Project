@@ -165,14 +165,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1a61005fa4d89d49a18659583ddc523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentMoveSpeed: 5
-  normalMoveSpeed: 5
+  currentMoveSpeed: 8
+  normalMoveSpeed: 8
   slowMoveSpeed: 2
-  dashMoveSpeed: 20
+  dashMoveSpeed: 10
   canDash: 0
   isDashCooldown: 0
   dashing: 0
-  dashDuration: 0.5
+  dashDuration: 0.2
   dashCooldown: 2
   dashLayerMask:
     serializedVersion: 2
