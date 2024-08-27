@@ -6,26 +6,26 @@ using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
 
 public class NetworkMapManager : NetworkSceneSingleton<NetworkMapManager>
 {
-    public static void SendSelectMainObstacle(int gridID, int obsIndex)
+    public static void SendSelectMainObstacle(int gridIndex, int obsIndex)
     {
-        Instance.PV.RPC("RPC_SendSelectMainObstacle", RpcTarget.AllBuffered, gridID, obsIndex);
+        Instance.PV.RPC("RPC_SendSelectMainObstacle", RpcTarget.AllBuffered, gridIndex, obsIndex);
     }
 
     [PunRPC]
-    public void RPC_SendSelectMainObstacle(int gridID, int obsIndex)
+    public void RPC_SendSelectMainObstacle(int gridIndex, int obsIndex)
     {
-        MapGridManager.Instance.SelectGridMainObstacle(gridID, obsIndex);
+        MapGridManager.Instance.SelectGridMainObstacle(gridIndex, obsIndex);
     }
 
 
-    public static void SendEnableMapGridObstacle(Vector2Int gridIndex)
+    public static void SendEnableMapGridObstacle(int gridIndex)
     {
-        Instance.PV.RPC("RPC_SendEnableMapGridObstacle", RpcTarget.AllBuffered, gridIndex.x, gridIndex.y);
+        Instance.PV.RPC("RPC_SendEnableMapGridObstacle", RpcTarget.AllBuffered, gridIndex);
     }
 
     [PunRPC]
-    public void RPC_SendEnableMapGridObstacle(int gridX, int gridY)
+    public void RPC_SendEnableMapGridObstacle(int gridIndex)
     {
-        MapGridManager.Instance.EnableMapGridObstacle(new Vector2Int(gridX, gridY));
+        MapGridManager.Instance.EnableMapGridObstacle(gridIndex);
     }
 }

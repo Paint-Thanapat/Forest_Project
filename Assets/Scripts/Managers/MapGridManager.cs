@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
@@ -8,15 +9,21 @@ public class MapGridManager : SceneSingleton<MapGridManager>
     [SerializeField] private Vector2 centerGridPos;
     [SerializeField] private float gridSizeAndDistance = 1;
 
-
     [SerializeField] private float intervalTime = 1f;
-    public MapGrid[,] mapGrids { get; private set; }
+    public MapGrid[] mapGrids { get; private set; }
     public MapGrid grid;
+
+    List<int> allGridsIndex = new List<int>();
+
+    public override void Awake()
+    {
+        base.Awake();
+
+        CreateMap();
+    }
 
     private void Start()
     {
-        CreateMap();
-
         if (PhotonNetwork.IsMasterClient)
         {
             StartCoroutine(RandomObstacleActive());
@@ -25,36 +32,36 @@ public class MapGridManager : SceneSingleton<MapGridManager>
 
     IEnumerator RandomObstacleActive()
     {
-        while (true)
+        while (allGridsIndex.Count > 0)
         {
             yield return new WaitForSeconds(intervalTime);
 
-            Vector2Int randomGridIndex = new Vector2Int(Random.Range(0, gridSize.x), Random.Range(0, gridSize.y));
+            int randomGridIndex = Random.Range(0, allGridsIndex.Count);
 
-            EnableMapGridObstacle(randomGridIndex);
+            EnableMapGridObstacle(allGridsIndex[randomGridIndex]);
 
-            NetworkMapManager.SendEnableMapGridObstacle(randomGridIndex);
+            NetworkMapManager.SendEnableMapGridObstacle(allGridsIndex[randomGridIndex]);
+
+            allGridsIndex.RemoveAt(randomGridIndex);
         }
     }
 
-    public void EnableMapGridObstacle(Vector2Int gridIndex)
+    public void EnableMapGridObstacle(int gridIndex)
     {
-        mapGrids[gridIndex.x, gridIndex.y].EnableMainObstacle();
+        mapGrids[gridIndex].EnableMainObstacle();
     }
 
-    public void SelectGridMainObstacle(int gridID, int selectedObsIndex)
+    public void SelectGridMainObstacle(int gridIndex, int selectedObsIndex)
     {
-        Vector2Int _gridIndex = GetGridIndex(gridID);
-
         if (mapGrids == null) return;
-        if (mapGrids[_gridIndex.x, _gridIndex.y] == null) return;
+        if (mapGrids[gridIndex] == null) return;
 
-        mapGrids[_gridIndex.x, _gridIndex.y].SetMainObstacle(selectedObsIndex);
+        mapGrids[gridIndex].SetMainObstacle(selectedObsIndex);
     }
 
     private void CreateMap()
     {
-        mapGrids = new MapGrid[gridSize.x, gridSize.y];
+        mapGrids = new MapGrid[gridSize.x * gridSize.y];
 
         Vector2 startGridPos = new Vector2(-((float)gridSize.x - 1) / 2 * gridSizeAndDistance, -((float)gridSize.y - 1) / 2 * gridSizeAndDistance);
 
@@ -62,27 +69,15 @@ public class MapGridManager : SceneSingleton<MapGridManager>
         {
             for (int j = 0; j < gridSize.y; j++)
             {
-                mapGrids[i, j] = Instantiate(grid, new Vector3(startGridPos.x + (i * gridSizeAndDistance) + centerGridPos.x, 0, startGridPos.y + (j * gridSizeAndDistance) + centerGridPos.y), Quaternion.identity);
-                mapGrids[i, j].transform.parent = this.transform;
-                mapGrids[i, j].transform.localScale = Vector3.one * gridSizeAndDistance;
-                mapGrids[i, j].gridID = (gridSize.x * i) + j;
+                int index = ((gridSize.x - 1) * i) + j;
+
+                mapGrids[index] = Instantiate(grid, new Vector3(startGridPos.x + (i * gridSizeAndDistance) + centerGridPos.x, 0, startGridPos.y + (j * gridSizeAndDistance) + centerGridPos.y), Quaternion.identity);
+                mapGrids[index].transform.parent = this.transform;
+                mapGrids[index].transform.localScale = Vector3.one * gridSizeAndDistance;
+                mapGrids[index].gridID = index;
+
+                allGridsIndex.Add(mapGrids[index].gridID);
             }
         }
-    }
-
-    public Vector2Int GetGridIndex(int gridIndex)
-    {
-        int temp_gridIndex = gridIndex;
-        int x_count = 0;
-        int y_count = 0;
-
-        while (temp_gridIndex > gridSize.x)
-        {
-            temp_gridIndex -= gridSize.x;
-            x_count++;
-        }
-        y_count = temp_gridIndex;
-
-        return new Vector2Int(x_count, y_count);
     }
 }
