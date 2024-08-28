@@ -28,7 +28,7 @@ public class Player : MonoBehaviourPunCallbacks
 
     public Rigidbody rb { get; private set; }
     public Animator anim { get; private set; }
-    PhotonView PV;
+    public PhotonView PV { get; private set; }
 
     private void Awake()
     {
@@ -36,13 +36,16 @@ public class Player : MonoBehaviourPunCallbacks
         anim = GetComponentInChildren<Animator>();
         PV = GetComponent<PhotonView>();
 
+        NetworkGameplayManager.player = this;
+
         if (PV.IsMine)
         {
             movementStateMachine = new PlayerMovementStateMachine(this);
+            NetworkGameplayManager.LocalID = PV.ViewID;
         }
         else
         {
-            Destroy(rb);
+            rb.isKinematic = true;
         }
 
     }
