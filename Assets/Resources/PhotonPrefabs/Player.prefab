@@ -85,6 +85,7 @@ MonoBehaviour:
   model: {fileID: 5948655551074914071}
   currentMoveSpeed: 8
   normalMoveSpeed: 8
+  runMoveSpeed: 12
   slowMoveSpeed: 2
   dashMoveSpeed: 10
   canDash: 0

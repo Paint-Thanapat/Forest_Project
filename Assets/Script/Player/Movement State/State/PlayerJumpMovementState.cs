@@ -26,6 +26,8 @@ public class PlayerJumpMovementState : PlayerMovementState
         {
             stateMachine.player.rb.AddForce((movementDir + Vector3.up) * jumpForce, ForceMode.VelocityChange);
         }
+
+        stateMachine.player.canJump = false;
     }
 
     public override void PhysicsUpdate()
@@ -47,5 +49,7 @@ public class PlayerJumpMovementState : PlayerMovementState
     public override void Exit()
     {
         base.Exit();
+
+        stateMachine.player.canJump = true;
     }
 }

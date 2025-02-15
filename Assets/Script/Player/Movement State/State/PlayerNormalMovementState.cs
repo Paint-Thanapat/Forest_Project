@@ -17,4 +17,19 @@ public class PlayerNormalMovementState : PlayerMovementState
 
         stateMachine.player.canDash = true;
     }
+
+    public override void HandleInput()
+    {
+        base.HandleInput();
+
+        CheckToChangeRunState();
+    }
+
+    private void CheckToChangeRunState()
+    {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            stateMachine.ChangeState(stateMachine.runState);
+        }
+    }
 }

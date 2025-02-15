@@ -86,7 +86,7 @@ public class PlayerMovementState : IState
 
     #region Private Methods
 
-    private void ReadMovementInput()
+    protected void ReadMovementInput()
     {
         //walk
         float horizontal = Input.GetAxisRaw("Horizontal");
@@ -96,7 +96,7 @@ public class PlayerMovementState : IState
         stateMachine.player.animController.AnimSetBool(stateMachine.player.animController.WalkHash, stateMachine.player.movementVector != Vector3.zero);
 
         //Dash
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && stateMachine.player.canJump)
         {
             stateMachine.ChangeState(stateMachine.jumpState);
         }
@@ -136,12 +136,16 @@ public class PlayerMovementState : IState
         return Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
     }
 
-    private void UpdatePlayerLookForward()
+    protected void UpdatePlayerLookForward()
     {
         float targetAngle = stateMachine.player.cameraTransform.eulerAngles.y;
         stateMachine.player.model.transform.LookAt(stateMachine.player.transform.position + Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward);
     }
 
+    protected Vector3 GetMovementVector()
+    {
+        return stateMachine.player.movementVector;
+    }
 
     #endregion
 }

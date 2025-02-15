@@ -27,6 +27,7 @@ public class Player : MonoBehaviourPunCallbacks
     public Transform cameraTransform;
     public float jumpForce;
     public LayerMask jumpContractMask;
+    public bool canJump;
     public PlayerMovementStateMachine movementStateMachine { get; private set; }
 
     public PlayerAnimatorController animController;

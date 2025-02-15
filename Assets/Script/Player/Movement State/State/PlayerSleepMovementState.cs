@@ -8,4 +8,35 @@ public class PlayerSleepMovementState : PlayerMovementState
     {
 
     }
+
+    public override void Enter()
+    {
+        base.Enter();
+
+        stateMachine.player.animController.AnimSetBool(stateMachine.player.animController.SleepHash, true);
+
+        stateMachine.player.canJump = false;
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+
+        stateMachine.player.animController.AnimSetBool(stateMachine.player.animController.SleepHash, false);
+
+        stateMachine.player.canJump = true;
+    }
+
+    public override void Update()
+    {
+        if (GetMovementVector() != Vector3.zero)
+        {
+            stateMachine.ChangeState(stateMachine.normalState);
+        }
+    }
+
+    public override void PhysicsUpdate()
+    {
+
+    }
 }

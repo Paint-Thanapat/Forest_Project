@@ -6,6 +6,7 @@ public class PlayerMovementStateMachine : StateMachine
 {
     public Player player { get; }
     public PlayerNormalMovementState normalState { get; }
+    public PlayerRunMovementState runState { get; }
     public PlayerSlowMovementState slowState { get; }
     public PlayerDashMovementState dashState { get; }
     public PlayerStopMovementState stopState { get; }
@@ -16,6 +17,8 @@ public class PlayerMovementStateMachine : StateMachine
         player = _player;
 
         normalState = new PlayerNormalMovementState(this);
+
+        runState = new PlayerRunMovementState(this);
 
         slowState = new PlayerSlowMovementState(this);
 
