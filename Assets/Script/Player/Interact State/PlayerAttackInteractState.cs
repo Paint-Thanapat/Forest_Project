@@ -17,15 +17,4 @@ public class PlayerAttackInteractState : MonoBehaviour, IPlayerInteractState
         // _playerInteractController.playerWeaponHolder.Decorate();
         // _playerInteractController.playerWeaponHolder.ToggleFire();
     }
-
-    void Update()
-    {
-        if (_playerInteractController)
-        {
-            if (_playerInteractController.thisIsCurrentState(this))
-            {
-                _playerInteractController.CastAimPoint();
-            }
-        }
-    }
 }

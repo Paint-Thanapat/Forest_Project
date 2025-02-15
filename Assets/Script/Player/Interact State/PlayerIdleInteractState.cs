@@ -13,13 +13,4 @@ public class PlayerIdleInteractState : MonoBehaviour, IPlayerInteractState
             _playerInteractController = interactController;
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (_playerInteractController.thisIsCurrentState(this))
-        {
-            _playerInteractController.CastAimPoint();
-        }
-    }
 }

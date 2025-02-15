@@ -4,117 +4,52 @@ using UnityEngine;
 
 public enum CameraView { LockPlayerPosition, FollowMouse }
 
-public class MainCamera : Observer
+public class MainCamera : SceneSingleton<MainCamera>
 {
-    public static MainCamera Instance;
-    public CameraView cameraView;
-    private PlayerInteractController _playerInteractController;
+    public Transform player;             // The player's transform
+    public Vector3 offset;
+    public float playerHeight = 1.8f;
+    float sensitivity = 2.0f;     // Mouse sensitivity
+    public float rotationSpeed = 5.0f;   // Rotation speed
+    public Vector2 pitchMinMax = new Vector2(-30, 60);  // Min/Max pitch angles
 
-    private Vector3 _offset;
-    public Vector3 focusPoint;
+    private float currentYaw = 0.0f;     // Current yaw rotation
+    private float currentPitch = 0.0f;   // Current pitch rotation
 
-    private Vector3 _playerPoint;
-    private Vector3 _aimPoint;
+    public LayerMask cameraLayerMask;
 
-    public Vector3 currentCameraPosition;
-
-    [Header("Camera Shake")]
-    public bool isShaking;
-    public float shakeDuration = 0.2f;
-    public float shakeMagnitude;
-
-    private void Awake()
+    void Update()
     {
-        Instance = this;
+        // Handle mouse input for camera rotation
+        float mouseX = Input.GetAxis("Mouse X");
+        float mouseY = Input.GetAxis("Mouse Y");
+
+        currentYaw += mouseX * sensitivity;  // Rotate around Y-axis (left/right)
+        currentPitch += mouseY * sensitivity; // Rotate around X-axis (up/down)
+
+        // Clamp pitch to avoid flipping the camera
+        currentPitch = Mathf.Clamp(currentPitch, pitchMinMax.x, pitchMinMax.y);
     }
 
-    void Start()
+    void LateUpdate()
     {
-        _offset = transform.position;
-
-        GameManager.Instance.mainCamera = this;
-    }
-
-    public void SwitchCameraMode()
-    {
-        if (cameraView == CameraView.LockPlayerPosition)
+        if (player != null)
         {
-            cameraView = CameraView.FollowMouse;
-        }
-        else if (cameraView == CameraView.FollowMouse)
-        {
-            cameraView = CameraView.LockPlayerPosition;
-        }
-    }
+            // Calculate the desired position of the camera
+            Quaternion rotation = Quaternion.Euler(currentPitch, currentYaw, 0);
 
-    void FixedUpdate()
-    {
-        if (_playerInteractController != null)
-        {
+            // Apply the rotation and position to the camera
+            transform.position = player.position + rotation * offset;
 
-            focusPoint = ((_playerPoint + (_aimPoint)));
-            //Debug.Log(focusPoint);
-        }
+            Vector3 headPos = player.position + (Vector3.up * playerHeight);
+            Vector3 cameraDir = transform.position - player.position + (Vector3.up * playerHeight);
+            float cameraDis = Vector3.Distance(headPos, transform.position);
 
-        currentCameraPosition = Vector3.Slerp(transform.position, (focusPoint / 2) + _offset, 10f * Time.deltaTime);
+            transform.LookAt(headPos);  // Make the camera always look at the player
 
-        if (isShaking)
-        {
-            gameObject.transform.position = currentCameraPosition + (Random.insideUnitSphere * shakeMagnitude);
-        }
-        else
-        {
-            transform.position = currentCameraPosition;
-        }
-
-        //Debug.Log(_offset);
-    }
-
-    public void StartCameraShake()
-    {
-        StartCoroutine(CameraShake());
-    }
-
-    public IEnumerator CameraShake()
-    {
-        float shakingTime = shakeDuration;
-        while (shakingTime > 0)
-        {
-            isShaking = true;
-            shakingTime -= Time.deltaTime;
-            yield return null;
-        }
-
-        isShaking = false;
-    }
-
-    public override void Notify(Subject subject)
-    {
-        if (!_playerInteractController)
-        {
-            _playerInteractController = subject.GetComponent<PlayerInteractController>();
-        }
-
-        if (_playerInteractController)
-        {
-            if (_playerPoint != _playerInteractController.transform.position)
+            if (Physics.Raycast(headPos, cameraDir, out RaycastHit hit, cameraDis, cameraLayerMask))
             {
-                _playerPoint = _playerInteractController.transform.position;
-            }
-
-            if (cameraView == CameraView.LockPlayerPosition)
-            {
-                if (_aimPoint != _playerInteractController.transform.position)
-                {
-                    _aimPoint = _playerInteractController.transform.position;
-                }
-            }
-            if (cameraView == CameraView.FollowMouse)
-            {
-                if (_aimPoint != _playerInteractController.aimPoint)
-                {
-                    _aimPoint = _playerInteractController.aimPoint;
-                }
+                transform.position = hit.point;
             }
         }
     }

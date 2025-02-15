@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class Player : MonoBehaviourPunCallbacks
 {
+    public GameObject model;
     [Header("Current Speed")]
     public float currentMoveSpeed = 5;
     [Header("Speed")]
     public float normalMoveSpeed = 5;
+    public float runMoveSpeed = 8;
     public float slowMoveSpeed = 2;
 
     [Header("Dash")]
@@ -23,8 +25,11 @@ public class Player : MonoBehaviourPunCallbacks
     [Header("Declare Component Movement")]
     public Vector3 movementVector;
     public Transform cameraTransform;
-
+    public float jumpForce;
+    public LayerMask jumpContractMask;
     public PlayerMovementStateMachine movementStateMachine { get; private set; }
+
+    public PlayerAnimatorController animController;
 
     public Rigidbody rb { get; private set; }
     public Animator anim { get; private set; }
@@ -42,11 +47,14 @@ public class Player : MonoBehaviourPunCallbacks
         {
             movementStateMachine = new PlayerMovementStateMachine(this);
             NetworkGameplayManager.LocalID = PV.ViewID;
+            MainCamera.Instance.player = this.transform;
         }
         else
         {
             rb.isKinematic = true;
         }
+
+        animController.Initialize();
 
     }
 

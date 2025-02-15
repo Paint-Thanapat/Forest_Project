@@ -1,0 +1,21 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[System.Serializable]
+public class PlayerAnimatorController
+{
+    public Animator anim;
+    private string BoolIsWalk = "isWalk";
+    public int WalkHash { get; private set; }
+
+    public void Initialize()
+    {
+        WalkHash = Animator.StringToHash(BoolIsWalk);
+    }
+
+    public void AnimSetBool(int animationHash, bool value)
+    {
+        anim.SetBool(animationHash, value);
+    }
+}

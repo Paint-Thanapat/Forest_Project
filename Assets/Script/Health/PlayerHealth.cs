@@ -17,17 +17,12 @@ public class PlayerHealth : Health, IPlayerElement
 
     void SetPlayerToGameManager()
     {
-        // GameManager.Instance.UIGameplay.SetPlayerHealth(this);
         GameManager.Instance.playerCharacter = this.gameObject;
     }
 
     public override void TakeDamage(float damage)
     {
         base.TakeDamage(damage);
-
-        GameManager.Instance.mainCamera.StartCameraShake();
-
-        // GameManager.Instance.UIGameplay.SetPlayerHealth(this);
     }
     public override void Die()
     {

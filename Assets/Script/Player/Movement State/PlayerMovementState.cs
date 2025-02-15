@@ -46,7 +46,7 @@ public class PlayerMovementState : IState
 
     public virtual void Update()
     {
-
+        UpdatePlayerLookForward();
     }
 
     public virtual void PhysicsUpdate()
@@ -93,12 +93,12 @@ public class PlayerMovementState : IState
         float vertical = Input.GetAxisRaw("Vertical");
         stateMachine.player.movementVector = new Vector3(horizontal, 0f, vertical).normalized;
 
+        stateMachine.player.animController.AnimSetBool(stateMachine.player.animController.WalkHash, stateMachine.player.movementVector != Vector3.zero);
+
         //Dash
-        if (Input.GetKeyDown(KeyCode.Space) && !stateMachine.player.isDashCooldown && stateMachine.player.canDash)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            stateMachine.player.isDashCooldown = true;
-            stateMachine.ChangeState(stateMachine.dashState);
-            stateMachine.player.StartCoroutine(ReCooldownDash());
+            stateMachine.ChangeState(stateMachine.jumpState);
         }
     }
 
@@ -106,9 +106,7 @@ public class PlayerMovementState : IState
     {
         if (stateMachine.player.movementVector.magnitude >= 0.1f)
         {
-            float targetAngle = Mathf.Atan2(stateMachine.player.movementVector.x, stateMachine.player.movementVector.z) * Mathf.Rad2Deg + stateMachine.player.cameraTransform.eulerAngles.y;
-
-            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            Vector3 moveDir = GetMoveDirection();
 
             stateMachine.player.rb.MovePosition((Vector3)stateMachine.player.transform.position + (moveDir * stateMachine.player.currentMoveSpeed * Time.deltaTime));
         }
@@ -131,6 +129,19 @@ public class PlayerMovementState : IState
 
         stateMachine.player.isDashCooldown = false;
     }
+
+    protected Vector3 GetMoveDirection()
+    {
+        float targetAngle = Mathf.Atan2(stateMachine.player.movementVector.x, stateMachine.player.movementVector.z) * Mathf.Rad2Deg + stateMachine.player.cameraTransform.eulerAngles.y;
+        return Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+    }
+
+    private void UpdatePlayerLookForward()
+    {
+        float targetAngle = stateMachine.player.cameraTransform.eulerAngles.y;
+        stateMachine.player.model.transform.LookAt(stateMachine.player.transform.position + Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward);
+    }
+
 
     #endregion
 }

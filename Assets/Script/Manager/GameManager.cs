@@ -4,17 +4,14 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    public MainCamera mainCamera;
-
     public GameObject playerCharacter;
 
-    void Update()
+    public override void Awake()
     {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            mainCamera.SwitchCameraMode();
-        }
+        base.Awake();
 
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void DamageArea(Vector3 point, float damage, float radius)

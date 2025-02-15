@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInteractController : Subject
+public class PlayerInteractController : MonoBehaviour
 {
     public Vector3 aimPoint { get; private set; }
 
@@ -28,16 +28,6 @@ public class PlayerInteractController : Subject
         _stopInteractState = gameObject.AddComponent<PlayerStopInteractState>();
 
         TransitionToNormalState();
-    }
-    void OnEnable()
-    {
-        if (_mainCamera)
-            Attach(_mainCamera);
-    }
-    void OnDisable()
-    {
-        if (_mainCamera)
-            Detach(_mainCamera);
     }
 
     void Update()
@@ -71,26 +61,6 @@ public class PlayerInteractController : Subject
                 // playerWeaponHolder.ToggleFire();
             }
         }
-    }
-
-    public void CastAimPoint()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 1000, aimLayer))
-        {
-            aimPoint = hit.point;
-        }
-
-        LookAtPoint(aimPoint);
-
-        NotifyObservers();
-    }
-    void LookAtPoint(Vector3 point)
-    {
-        Vector3 lookPoint = new Vector3(point.x, transform.position.y, point.z);
-
-        model.transform.LookAt(lookPoint);
     }
 
     public bool thisIsCurrentState(IPlayerInteractState state)
