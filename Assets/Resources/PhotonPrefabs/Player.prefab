@@ -102,6 +102,7 @@ MonoBehaviour:
   jumpContractMask:
     serializedVersion: 2
     m_Bits: 179
+  canJump: 0
   animController:
     anim: {fileID: 3652231809450710653}
 --- !u!54 &6901165771408372467

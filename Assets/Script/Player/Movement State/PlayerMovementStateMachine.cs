@@ -11,6 +11,7 @@ public class PlayerMovementStateMachine : StateMachine
     public PlayerDashMovementState dashState { get; }
     public PlayerStopMovementState stopState { get; }
     public PlayerJumpMovementState jumpState { get; }
+    public PlayerSleepMovementState sleepState { get; }
 
     public PlayerMovementStateMachine(Player _player)
     {
@@ -27,5 +28,7 @@ public class PlayerMovementStateMachine : StateMachine
         stopState = new PlayerStopMovementState(this);
 
         jumpState = new PlayerJumpMovementState(this);
+
+        sleepState = new PlayerSleepMovementState(this);
     }
 }

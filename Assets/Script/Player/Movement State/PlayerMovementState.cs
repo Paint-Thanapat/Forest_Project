@@ -32,6 +32,8 @@ public class PlayerMovementState : IState
         Debug.Log("State: " + GetType().Name);
 
         // AddInputActionsCallBacks();
+
+        stateMachine.player.canJump = true;
     }
 
     public virtual void Exit()
@@ -99,6 +101,11 @@ public class PlayerMovementState : IState
         if (Input.GetKeyDown(KeyCode.Space) && stateMachine.player.canJump)
         {
             stateMachine.ChangeState(stateMachine.jumpState);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            stateMachine.ChangeState(stateMachine.sleepState);
         }
     }
 
