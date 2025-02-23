@@ -43,7 +43,10 @@ public class PlayerMovementState : IState
 
     public virtual void HandleInput()
     {
-        ReadMovementInput();
+        MoveInput();
+        JumpInput();
+        SleepInput();
+        CollectInput();
     }
 
     public virtual void Update()
@@ -88,24 +91,38 @@ public class PlayerMovementState : IState
 
     #region Private Methods
 
-    protected void ReadMovementInput()
+    protected void MoveInput()
     {
-        //walk
+        // Walk
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         stateMachine.player.movementVector = new Vector3(horizontal, 0f, vertical).normalized;
 
         stateMachine.player.animController.AnimSetBool(stateMachine.player.animController.WalkHash, stateMachine.player.movementVector != Vector3.zero);
+    }
 
-        //Dash
+    protected void JumpInput()
+    {
+        // Jump
         if (Input.GetKeyDown(KeyCode.Space) && stateMachine.player.canJump)
         {
             stateMachine.ChangeState(stateMachine.jumpState);
         }
+    }
 
+    protected void SleepInput()
+    {
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             stateMachine.ChangeState(stateMachine.sleepState);
+        }
+    }
+
+    protected void CollectInput()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            stateMachine.ChangeState(stateMachine.collectState);
         }
     }
 

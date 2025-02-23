@@ -5,12 +5,10 @@ using UnityEngine;
 public class PlayerHealth : Health, IPlayerElement
 {
     private Player _player;
-    private PlayerInteractController _playerInteractController;
 
     void Start()
     {
         _player = GetComponent<Player>();
-        _playerInteractController = GetComponent<PlayerInteractController>();
 
         Invoke(nameof(SetPlayerToGameManager), 0.1f);
     }
@@ -28,7 +26,6 @@ public class PlayerHealth : Health, IPlayerElement
     {
         base.Die();
         _player.ChangeState(_player.movementStateMachine.stopState);
-        _playerInteractController.TransitionToStopState();
 
         GameManager.Instance.ExplosionForce(transform.position, 5, 1.5f);
         GameManager.Instance.DamageArea(transform.position, 99999f, 1000f);

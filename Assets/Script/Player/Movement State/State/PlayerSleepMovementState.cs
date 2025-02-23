@@ -39,4 +39,10 @@ public class PlayerSleepMovementState : PlayerMovementState
     {
 
     }
+
+    public override void HandleInput()
+    {
+        MoveInput();
+        JumpInput();
+    }
 }
