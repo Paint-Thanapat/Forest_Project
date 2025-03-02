@@ -13,6 +13,8 @@ public class PlayerMovementStateMachine : StateMachine
     public PlayerJumpMovementState jumpState { get; }
     public PlayerSleepMovementState sleepState { get; }
     public PlayerCollectMovementState collectState { get; }
+    public PlayerEatMovementState eatState { get; }
+    public PlayerDrinkMovementState drinkState { get; }
 
     public PlayerMovementStateMachine(Player _player)
     {
@@ -33,5 +35,9 @@ public class PlayerMovementStateMachine : StateMachine
         sleepState = new PlayerSleepMovementState(this);
 
         collectState = new PlayerCollectMovementState(this);
+
+        eatState = new PlayerEatMovementState(this);
+
+        drinkState = new PlayerDrinkMovementState(this);
     }
 }

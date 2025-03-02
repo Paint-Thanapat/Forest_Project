@@ -47,6 +47,8 @@ public class PlayerMovementState : IState
         JumpInput();
         SleepInput();
         CollectInput();
+        EatInput();
+        DrinkInput();
     }
 
     public virtual void Update()
@@ -98,7 +100,6 @@ public class PlayerMovementState : IState
         float vertical = Input.GetAxisRaw("Vertical");
         stateMachine.player.movementVector = new Vector3(horizontal, 0f, vertical).normalized;
 
-        stateMachine.player.animController.AnimSetBool(stateMachine.player.animController.WalkHash, stateMachine.player.movementVector != Vector3.zero);
     }
 
     protected void JumpInput()
@@ -123,6 +124,22 @@ public class PlayerMovementState : IState
         if (Input.GetKeyDown(KeyCode.E))
         {
             stateMachine.ChangeState(stateMachine.collectState);
+        }
+    }
+
+    protected void EatInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            stateMachine.ChangeState(stateMachine.eatState);
+        }
+    }
+
+    protected void DrinkInput()
+    {
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            stateMachine.ChangeState(stateMachine.drinkState);
         }
     }
 

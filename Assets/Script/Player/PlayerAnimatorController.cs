@@ -10,10 +10,14 @@ public class PlayerAnimatorController
     private string BoolIsRun = "isRun";
     private string BoolIsSleep = "isSleep";
     private string BoolIsCollect = "isCollect";
+    private string BoolIsEat = "isEat";
+    private string BoolIsDrink = "isDrink";
     public int WalkHash { get; private set; }
     public int RunHash { get; private set; }
     public int SleepHash { get; private set; }
     public int CollectHash { get; private set; }
+    public int EatHash { get; private set; }
+    public int DrinkHash { get; private set; }
 
     public void Initialize()
     {
@@ -21,6 +25,8 @@ public class PlayerAnimatorController
         RunHash = Animator.StringToHash(BoolIsRun);
         SleepHash = Animator.StringToHash(BoolIsSleep);
         CollectHash = Animator.StringToHash(BoolIsCollect);
+        EatHash = Animator.StringToHash(BoolIsEat);
+        DrinkHash = Animator.StringToHash(BoolIsDrink);
     }
 
     public void AnimSetBool(int animationHash, bool value)

@@ -20,9 +20,18 @@ public class PlayerNormalMovementState : PlayerMovementState
 
     public override void HandleInput()
     {
+        stateMachine.player.animController.AnimSetBool(stateMachine.player.animController.WalkHash, stateMachine.player.movementVector != Vector3.zero);
+
         base.HandleInput();
 
         CheckToChangeRunState();
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+
+        stateMachine.player.animController.AnimSetBool(stateMachine.player.animController.WalkHash, false);
     }
 
     private void CheckToChangeRunState()
