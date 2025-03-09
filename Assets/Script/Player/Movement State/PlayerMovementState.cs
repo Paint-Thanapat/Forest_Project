@@ -121,7 +121,7 @@ public class PlayerMovementState : IState
 
     protected void CollectInput()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.I))
         {
             stateMachine.ChangeState(stateMachine.collectState);
         }

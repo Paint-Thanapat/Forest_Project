@@ -36,6 +36,10 @@ public class Player : MonoBehaviourPunCallbacks
     public Animator anim { get; private set; }
     public PhotonView PV { get; private set; }
 
+    [Header("Tree Interact")]
+    [SerializeField] LayerMask treeInteractLayer;
+    BuildableTree interactingBuildableTree;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -49,6 +53,7 @@ public class Player : MonoBehaviourPunCallbacks
             movementStateMachine = new PlayerMovementStateMachine(this);
             NetworkGameplayManager.LocalID = PV.ViewID;
             MainCamera.Instance.player = this.transform;
+            GameManager.Instance.playerCharacter = this.gameObject;
         }
         else
         {
@@ -72,6 +77,49 @@ public class Player : MonoBehaviourPunCallbacks
 
         movementStateMachine.HandleInput();
         movementStateMachine.Update();
+
+        if (interactingBuildableTree != null)
+        {
+            HangManager.OnUpdatePreviewHang(model.transform.eulerAngles);
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (interactingBuildableTree != null)
+            {
+                HangManager.OnCancelPreviewHang?.Invoke();
+                interactingBuildableTree = null;
+            }
+
+            if (Physics.Raycast(MainCamera.Instance.transform.position, MainCamera.Instance.transform.forward, out RaycastHit hit, 15f, treeInteractLayer))
+            {
+                BuildableTree temp_tree = hit.transform.GetComponent<BuildableTree>();
+                if (temp_tree != null)
+                {
+                    if (!temp_tree.isPreviewToBuild)
+                    {
+                        // * Open UI
+                        TreeInteractUIManager.Instance.interactTree = temp_tree;
+                        TreeInteractUIManager.Instance.SetActivePanel(true);
+
+                        interactingBuildableTree = temp_tree;
+                    }
+                    else
+                    {
+                        // * 
+                    }
+                }
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (interactingBuildableTree != null)
+            {
+                HangManager.OnCreateHang?.Invoke(interactingBuildableTree, model.transform.eulerAngles);
+                interactingBuildableTree = null;
+            }
+        }
     }
 
     private void FixedUpdate()

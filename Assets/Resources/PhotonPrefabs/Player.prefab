@@ -334,13 +334,16 @@ MonoBehaviour:
     m_Bits: 4294967295
   movementVector: {x: 0, y: 0, z: 0}
   cameraTransform: {fileID: 0}
-  jumpForce: 5
+  jumpForce: 20
   jumpContractMask:
     serializedVersion: 2
     m_Bits: 179
   canJump: 0
   animController:
     anim: {fileID: 3652231809450710653}
+  treeInteractLayer:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!54 &6901165771408372467
 Rigidbody:
   m_ObjectHideFlags: 0
