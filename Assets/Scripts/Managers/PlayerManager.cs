@@ -24,7 +24,6 @@ public class PlayerManager : MonoBehaviour
     void CreateController()
     {
         // Create Player Controller
-        GameObject player = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Player"), Vector3.zero, Quaternion.identity);
-        player.GetComponent<Player>().cameraTransform = MainCamera.Instance.transform;
+        GameObject player = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Demo Player Character"), Vector3.zero, Quaternion.identity);
     }
 }

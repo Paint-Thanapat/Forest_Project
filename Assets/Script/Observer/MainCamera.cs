@@ -38,8 +38,11 @@ public class MainCamera : SceneSingleton<MainCamera>
             // Calculate the desired position of the camera
             Quaternion rotation = Quaternion.Euler(currentPitch, currentYaw, 0);
 
+            float xOffset = offset.x;
+            Vector3 useOffset = new Vector3(0, offset.y, offset.z);
+
             // Apply the rotation and position to the camera
-            transform.position = player.position + rotation * offset;
+            transform.position = player.position + (Quaternion.Euler(xOffset, 0, 0) * Vector3.right) + (rotation * offset);
 
             Vector3 headPos = player.position + (Vector3.up * playerHeight);
             Vector3 cameraDir = transform.position - player.position + (Vector3.up * playerHeight);
